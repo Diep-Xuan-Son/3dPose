@@ -1,0 +1,5 @@
+-muốn sửa annotation vào file: 
+"/home/son/AI/Briefcam/PaddleDetection/ppdet/data/source/keypoint_coco.py"
+phần "class KeypointTopDownCocoDataset(KeypointTopDownBaseDataset):"
+-Luồng để sửa annotation và đường dẫn, vừa đọc code và file config "dark_hrnet_w32_256x192.yml" để hiểu rõ hơn
+train -> ppdet/engine/trainer.py -> create in ppdet/core/workspace.py -> ./ppdet/data/reader.py -> keypoint_coco.py (<-> dataset/coco/annotations/person_keypoints_val2017.json)

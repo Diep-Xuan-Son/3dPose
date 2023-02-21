@@ -1,0 +1,49 @@
+1. Tao file json cac skeleton 
+python deploy/python/det_keypoint_unite_infer.py --det_model_dir=output_inference/mot_ppyoloe_l_36e_pipeline/ --keypoint_model_dir=output_inference/dark_hrnet_w32_256x192 --video_file=./video_golf --device=CPU --save_res=True
+
+2. Dua file json vao dung thu muc
+mkdir ./PaddleVideo/applications/PPHuman/datasets/annotations
+
+sudo mv det_keypoint_unite_video_results.json ./PaddleVideo/applications/PPHuman/datasets/annotations/det_keypoint_unite_video_results_playtennis_01_cam0.json
+
+3. cau truc thu muc annotations
+annotations/
+├── det_keypoint_unite_image_results_fall-01-cam0-rgb.json
+├── det_keypoint_unite_image_results_fall-02-cam0-rgb.json
+├── det_keypoint_unite_image_results_fall-03-cam0-rgb.json
+├── det_keypoint_unite_image_results_fall-04-cam0-rgb.json
+    ...
+├── det_keypoint_unite_image_results_fall-28-cam0-rgb.json
+├── det_keypoint_unite_image_results_fall-29-cam0-rgb.json
+└── det_keypoint_unite_image_results_fall-30-cam0-rgb.json
+
+4. tao data tu file json
+duong dan hien tai ./PaddleVideo/applications/PPHuman/datasets/
+python prepare_dataset.py
+
+5. training 
+neu co val
+python main.py --validate -c applications/PPHuman/configs/stgcn_pphuman.yaml
+
+neu khong co val
+python main.py -c applications/PPHuman/configs/stgcn_pphuman.yaml
+
+6. export model
+duong dan hien tai ./PaddleVideo/applications/PPHuman/datasets/
+python tools/export_model.py -c applications/PPHuman/configs/stgcn_pphuman.yaml \
+                                -p output/STGCN/STGCN_best.pdparams \
+                                -o output_inference/STGCN
+
+cp applications/PPHuman/configs/infer_cfg.yml output_inference/STGCN
+
+cd output_inference/STGCN
+mv STGCN.pdiparams model.pdiparams
+mv STGCN.pdiparams.info model.pdiparams.info
+mv STGCN.pdmodel model.pdmodel
+
+7. Cau truc file weights
+STGCN
+├── infer_cfg.yml
+├── model.pdiparams
+├── model.pdiparams.info
+├── model.pdmodel
